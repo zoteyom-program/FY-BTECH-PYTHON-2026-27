@@ -1,0 +1,12 @@
+fastapi>=0.110.0
+# Web framework used to build the Python backend API
+uvicorn>=0.29.0
+# Server that runs the FastAPI application
+python-dotenv>=1.0.0
+# Reads secret API keys from the .env file
+PyMuPDF>=1.24.0
+# Extracts text from uploaded PDF syllabus files
+python-multipart>=0.0.9
+# Allows FastAPI to accept uploaded files from forms
+httpx>=0.27.0
+# Sends async web requests to Groq AI and Open Trivia DB
