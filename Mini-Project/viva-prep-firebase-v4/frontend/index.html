@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<!-- Tell the browser this document uses HTML5 -->
+<html lang="en">
+<!-- Start the HTML page and set the language to English -->
+<head>
+<!-- Start the head section for metadata and stylesheets -->
+<meta charset="UTF-8">
+<!-- Support all text characters and emojis using UTF-8 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Make the layout scale properly on phones and laptops -->
+<title>VIVA Prep — B.Tech CSE Preparation</title>
+<!-- Set the browser tab title -->
+<link rel="stylesheet" href="/style.css">
+<!-- Connect our CSS stylesheet served by FastAPI -->
+</head>
+<!-- Close the head section -->
+
+<body>
+<!-- Start the visible body of the web page -->
+
+<div class="background">
+<!-- Fixed animated background layer behind all content -->
+<div class="background-image"></div>
+<!-- Subtle dark workspace background image -->
+<div class="orb one"></div>
+<!-- First glowing purple background orb -->
+<div class="orb two"></div>
+<!-- Second glowing cyan background orb -->
+<div class="orb three"></div>
+<!-- Third glowing pink background orb -->
+<div class="grid-floor"></div>
+<!-- Animated 3D perspective grid at the bottom -->
+<div class="particles" id="particles"></div>
+<!-- Container where JavaScript adds floating background dots -->
+</div>
+<!-- Close the background container -->
+
+<nav class="navbar">
+<!-- Top navigation bar that stays fixed while scrolling -->
+<div class="logo">
+<!-- Left side logo container -->
+<div class="logo-mark">V</div>
+<!-- Styled square V icon -->
+<span>VIVA Prep</span>
+<!-- Brand name with gradient text -->
+</div>
+<!-- Close logo container -->
+<div class="nav-actions">
+<!-- Right side navigation buttons container -->
+<button class="theme-orb" id="themeButton" onclick="toggleTheme()" aria-label="Change theme" title="Change theme"><span id="themeSymbol" class="theme-symbol">☾</span></button>
+<!-- Button to switch between Dark Mode and Light Mode -->
+<button id="navDashBtn" class="nav-btn hidden" onclick="scrollToDashboard()">Dashboard</button>
+<!-- Dashboard button (hidden until the student logs in) -->
+<button id="navLoginBtn" class="nav-btn" onclick="openAuth('login')">Login</button>
+<!-- Button to open the Login screen -->
+<button id="navSignupBtn" class="nav-btn signup-btn" onclick="openAuth('signup')">Sign Up</button>
+<!-- Button to open the Sign Up screen -->
+<button id="profileTriggerBtn" class="profile-avatar-btn hidden" onclick="openProfileDrawer()" title="Profile, Settings & Logout" aria-label="Open Profile Menu">
+<!-- Compact profile avatar button matching the clean icon-only pill design -->
+<span id="navAvatarDisplay" class="nav-avatar-display">👤</span>
+<!-- Displays either the user's uploaded photo or profile icon -->
+</button>
+<!-- Close compact profile trigger button -->
+</div>
+<!-- Close navigation actions -->
+</nav>
+<!-- Close top navigation bar -->
+
+<div id="profileBackdrop" class="drawer-backdrop hidden" onclick="closeProfileDrawer()"></div>
+<!-- Dimmed overlay behind the slide-out profile drawer -->
+
+<aside id="profileDrawer" class="profile-drawer" aria-hidden="true">
+<!-- Slide-out profile, settings, and logout drawer -->
+<div class="drawer-head">
+<!-- Top header of the slider drawer -->
+<strong>Profile & Settings</strong>
+<!-- Drawer title -->
+<button class="icon-btn" onclick="closeProfileDrawer()" title="Close">✕</button>
+<!-- Close button for the drawer -->
+</div>
+<!-- Close drawer header -->
+
+<div class="drawer-profile-box">
+<!-- User profile picture, name, and email summary -->
+<div id="drawerAvatarPreview" class="drawer-avatar-preview">👤</div>
+<!-- Circular avatar preview inside the slider -->
+<div class="drawer-user-meta">
+<!-- User name and email container -->
+<strong id="drawerUserName">Student</strong>
+<!-- Logged-in student's display name -->
+<span id="drawerUserEmail">student@example.com</span>
+<!-- Logged-in student's email -->
+</div>
+<!-- Close user meta -->
+</div>
+<!-- Close profile box -->
+
+<div class="drawer-section">
+<!-- Section to change profile picture -->
+<div class="drawer-label">CHANGE PROFILE PICTURE</div>
+<!-- Section title -->
+<label class="secondary-btn upload-photo-btn">
+<!-- Styled upload button wrapping hidden file input -->
+📷 Upload Photo
+<!-- Button label -->
+<input type="file" id="avatarUploadInput" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
+<!-- File picker for uploading a profile picture -->
+</label>
+<!-- Close upload label -->
+<div class="avatar-presets">
+<!-- Quick preset emoji avatar choices -->
+<button type="button" class="preset-btn" onclick="setPresetAvatar('👤')">👤</button>
+<!-- Default silhouette avatar -->
+<button type="button" class="preset-btn" onclick="setPresetAvatar('🧑‍💻')">🧑‍💻</button>
+<!-- Developer avatar -->
+<button type="button" class="preset-btn" onclick="setPresetAvatar('🎓')">🎓</button>
+<!-- Student avatar -->
+<button type="button" class="preset-btn" onclick="setPresetAvatar('🚀')">🚀</button>
+<!-- Rocket avatar -->
+<button type="button" class="preset-btn" onclick="setPresetAvatar('🦊')">🦊</button>
+<!-- Fox avatar -->
+</div>
+<!-- Close preset buttons -->
+</div>
+<!-- Close profile picture section -->
+
+<div class="drawer-section">
+<!-- Settings section for display name, theme, and default AI mode -->
+<div class="drawer-label">SETTINGS</div>
+<!-- Section title -->
+<div class="drawer-field">
+<!-- Display name input row -->
+<label for="settingsNameInput">Display Name</label>
+<!-- Label for name field -->
+<div class="drawer-inline-row">
+<!-- Input + save button row -->
+<input id="settingsNameInput" class="workspace-input compact-input" type="text" placeholder="Your name">
+<!-- Text field to rename profile -->
+<button type="button" class="primary-btn compact-btn" onclick="saveDisplayName()">Save</button>
+<!-- Saves display name to Firebase and Firestore -->
+</div>
+<!-- Close inline row -->
+</div>
+<!-- Close display name field -->
+
+<div class="drawer-setting-row">
+<!-- Theme toggle row -->
+<span>Appearance</span>
+<!-- Setting label -->
+<button type="button" class="secondary-btn compact-btn" id="drawerThemeBtn" onclick="toggleTheme()">🌙 Dark Mode</button>
+<!-- Toggles Dark/Light mode -->
+</div>
+<!-- Close theme row -->
+
+<div class="drawer-setting-row">
+<!-- Default AI mode row -->
+<span>Default Prep AI</span>
+<!-- Setting label -->
+<select id="drawerAiModeSelect" class="subject-search compact-select" onchange="setAIMode(this.value)">
+<!-- Dropdown to choose Super Mode or God Mode -->
+<option value="super">🚀 Super (20B)</option>
+<!-- Fast 20B model option -->
+<option value="god">👑 God (120B)</option>
+<!-- Deep 120B model option -->
+</select>
+<!-- Close AI mode select -->
+</div>
+<!-- Close AI mode row -->
+</div>
+<!-- Close settings section -->
+
+<div class="drawer-footer">
+<!-- Bottom section of the slider with the Logout button -->
+<button type="button" class="logout-drawer-btn" onclick="logoutUser()">🚪 Logout</button>
+<!-- Logs out and locks the website back to the Login screen -->
+</div>
+<!-- Close drawer footer -->
+</aside>
+<!-- Close slide-out profile drawer -->
+
+<main class="page">
+<!-- Main container that holds all app screens -->
+
+<section id="landing" class="page-section hidden">
+<!-- Landing page screen (hidden until the student logs in) -->
+<div class="hero">
+<!-- Two-column hero banner -->
+<div class="hero-content">
+<!-- Left column with heading, text, and buttons -->
+<div class="eyebrow"><span class="online-dot"></span>B.Tech CSE Preparation Platform</div>
+<!-- Small pill label with a pulsing green dot -->
+<h1>Prepare smarter.<br><span class="gradient-text">Perform better.</span></h1>
+<!-- Main headline with a gradient highlight -->
+<p>One intelligent preparation platform for B.Tech CSE students — viva, written tests, interviews, and hackathons.</p>
+<!-- Short description of VIVA Prep -->
+<div class="hero-buttons">
+<!-- Row of main call-to-action buttons -->
+<button class="primary-btn" onclick="document.getElementById('prepSection').scrollIntoView({behavior:'smooth'})">Start Preparing →</button>
+<!-- Scrolls down to the preparation paths grid -->
+<button class="secondary-btn" onclick="openChat()">Ask Prep AI ✦</button>
+<!-- Opens the floating Prep AI chat window -->
+</div>
+<!-- Close hero buttons -->
+<p class="hero-note">FastAPI + Firebase Auth & Firestore • Live Groq AI & PDF Viva</p>
+<!-- Small tech stack note below the buttons -->
+<div class="stats">
+<!-- Three highlight stat boxes -->
+<div class="stat"><strong>3</strong><span>CSE Tracks</span></div>
+<!-- Shows total preparation tracks -->
+<div class="stat"><strong id="topicCount">16+</strong><span>CSE Topics</span></div>
+<!-- Shows total topics (updated automatically by JavaScript) -->
+<div class="stat"><strong>2</strong><span>AI Modes</span></div>
+<!-- Shows the two Prep AI modes (Super and God) -->
+</div>
+<!-- Close stats row -->
+</div>
+<!-- Close hero left column -->
+<div class="hero-image-wrap">
+<!-- Right column with hero image and glow -->
+<div class="image-glow"></div>
+<!-- Soft glowing aura behind the image -->
+<img class="hero-image" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=90" alt="Students preparing together">
+<!-- Hero illustration photo -->
+</div>
+<!-- Close hero image wrapper -->
+</div>
+<!-- Close hero banner -->
+
+<section id="dashboardSection" class="dashboard-section">
+<!-- Student Command Center dashboard section -->
+<div class="dashboard-head">
+<!-- Dashboard title and refresh button row -->
+<div>
+<!-- Left side dashboard title group -->
+<div class="dashboard-kicker">⚡ YOUR PREPARATION COMMAND CENTER</div>
+<!-- Small uppercase label above the title -->
+<h2>Build your edge.</h2>
+<!-- Dashboard heading -->
+<p>Your activity, progress, streak, AI tokens, and achievements are tracked automatically.</p>
+<!-- Dashboard subtitle -->
+</div>
+<!-- Close dashboard title group -->
+<button class="secondary-btn dashboard-refresh" onclick="renderDashboard()">↻ Refresh</button>
+<!-- Button to manually refresh dashboard numbers -->
+</div>
+<!-- Close dashboard header -->
+
+<div class="dashboard-grid">
+<!-- Five-column grid for XP, Streak, Tokens Used, Overall Progress, and Achievements -->
+<div class="dash-stat dash-xp">
+<!-- XP stat card -->
+<div class="dash-stat-icon">⭐</div>
+<!-- Star icon for XP -->
+<div><span>XP</span><strong id="dashXP">0</strong><small>earned from preparation</small></div>
+<!-- XP number updated by JavaScript -->
+</div>
+<!-- Close XP stat card -->
+<div class="dash-stat dash-streak">
+<!-- Streak stat card -->
+<div class="dash-stat-icon">🔥</div>
+<!-- Fire icon for streak -->
+<div><span>STREAK</span><strong id="dashStreak">0 days</strong><small>consecutive study days</small></div>
+<!-- Streak count updated by JavaScript -->
+</div>
+<!-- Close streak stat card -->
+<div class="dash-stat dash-tokens">
+<!-- AI Tokens Used stat card on the dashboard -->
+<div class="dash-stat-icon">⚡</div>
+<!-- Lightning icon for AI tokens -->
+<div><span>TOKENS USED</span><strong id="dashTokens">0</strong><small>total AI tokens used</small></div>
+<!-- Live AI tokens counter updated by JavaScript -->
+</div>
+<!-- Close tokens stat card -->
+<div class="dash-stat dash-progress">
+<!-- Overall progress stat card -->
+<div class="dash-stat-icon">◈</div>
+<!-- Diamond icon for progress -->
+<div><span>OVERALL PROGRESS</span><strong id="dashProgress">0%</strong><small id="dashProgressLabel">Your journey starts here</small></div>
+<!-- Progress percentage updated by JavaScript -->
+</div>
+<!-- Close overall progress card -->
+<div class="dash-stat dash-achievements">
+<!-- Achievements stat card -->
+<div class="dash-stat-icon">🏆</div>
+<!-- Trophy icon for achievements -->
+<div><span>ACHIEVEMENTS</span><strong id="dashAchievements">0 / 6</strong><small>milestones unlocked</small></div>
+<!-- Unlocked achievements count updated by JavaScript -->
+</div>
+<!-- Close achievements card -->
+</div>
+<!-- Close five-column stat grid -->
+
+<div class="dashboard-main-grid">
+<!-- Two-column row for Continue Preparing and Today's Challenge -->
+<div class="dashboard-card continue-card">
+<!-- Card to resume the last studied subject -->
+<div class="card-label">▶ CONTINUE PREPARING</div>
+<!-- Small card header label -->
+<div id="continueEmpty" class="continue-empty">
+<!-- Shown when the user has not started any subject yet -->
+<div class="continue-orb">✦</div>
+<!-- Decorative glowing icon -->
+<div>
+<!-- Empty state text wrapper -->
+<h3>Start your first preparation session</h3>
+<!-- Prompt to pick a track -->
+<p>Choose a B.Tech CSE track below. VIVA Prep will automatically start tracking your progress.</p>
+<!-- Explanation text -->
+<button class="primary-btn" onclick="document.getElementById('prepSection').scrollIntoView({behavior:'smooth'})">Choose a Track →</button>
+<!-- Scrolls down to preparation tracks -->
+</div>
+<!-- Close empty state text wrapper -->
+</div>
+<!-- Close empty state view -->
+<div id="continueActive" class="continue-active hidden">
+<!-- Shown once the user has a saved subject to resume -->
+<div class="continue-icon" id="continueIcon">📚</div>
+<!-- Subject emoji icon -->
+<div class="continue-copy">
+<!-- Text and progress bar wrapper -->
+<span id="continuePath">Preparation</span>
+<!-- Saved preparation track name -->
+<h3 id="continueTitle">Continue your preparation</h3>
+<!-- Saved subject name -->
+<p id="continueMeta">Open your workspace and keep going.</p>
+<!-- Saved tab info -->
+<div class="mini-progress"><div id="continueBar"></div></div>
+<!-- Mini progress bar showing subject completion -->
+</div>
+<!-- Close continue text wrapper -->
+<button class="primary-btn" onclick="continuePreparation()">Resume →</button>
+<!-- Re-opens the user's last workspace directly -->
+</div>
+<!-- Close active continue view -->
+</div>
+<!-- Close continue card -->
+
+<div class="dashboard-card challenge-card">
+<!-- Card displaying today's study challenge -->
+<div class="card-label">🎯 TODAY'S CHALLENGE</div>
+<!-- Small card header label -->
+<div class="challenge-number">01</div>
+<!-- Big decorative challenge number -->
+<h3 id="challengeTitle">Complete your first study action</h3>
+<!-- Challenge title updated by JavaScript -->
+<p id="challengeText">Open a subject workspace and explore Concepts, Questions or Quick Revision.</p>
+<!-- Challenge instructions -->
+<div class="challenge-status"><span id="challengeStatusDot"></span><span id="challengeStatus">Not started</span></div>
+<!-- Status dot and label (Not started / Active) -->
+</div>
+<!-- Close challenge card -->
+</div>
+<!-- Close dashboard main row -->
+
+<div class="dashboard-bottom-grid">
+<!-- Two-column row for Achievements and Preparation Signal -->
+<div class="dashboard-card achievements-card">
+<!-- Card listing all 6 milestone badges -->
+<div class="card-label">🏆 ACHIEVEMENTS</div>
+<!-- Small card header label -->
+<div id="achievementList" class="achievement-list"></div>
+<!-- Grid filled with achievement badges by JavaScript -->
+</div>
+<!-- Close achievements card -->
+<div class="dashboard-card activity-card">
+<!-- Card showing progress ring and 7-day activity bars -->
+<div class="card-label">📈 PREPARATION SIGNAL</div>
+<!-- Small card header label -->
+<div class="signal-wrap">
+<!-- Wrapper for the circular ring and text -->
+<div class="signal-ring"><span id="signalPercent">0%</span></div>
+<!-- Circular progress ring filled using CSS conic-gradient -->
+<div>
+<!-- Signal description wrapper -->
+<h3 id="signalTitle">No activity yet</h3>
+<!-- Momentum level heading -->
+<p id="signalText">Your first workspace action will begin building your preparation profile.</p>
+<!-- Action count summary -->
+</div>
+<!-- Close signal description wrapper -->
+</div>
+<!-- Close signal wrap -->
+<div class="activity-bars" id="activityBars"></div>
+<!-- 7-day vertical bar chart generated by JavaScript -->
+</div>
+<!-- Close activity card -->
+</div>
+<!-- Close dashboard bottom row -->
+</section>
+<!-- Close dashboard section -->
+
+<div id="prepSection">
+<!-- Section where the user chooses a B.Tech CSE track -->
+<div class="section-title">
+<!-- Centered heading for preparation tracks -->
+<h2>What are you preparing for?</h2>
+<!-- Section heading -->
+<p>Choose your B.Tech CSE track, select the subjects you need, and open a focused preparation workspace.</p>
+<!-- Section subtitle -->
+</div>
+<!-- Close section title -->
+<div class="prep-grid" id="prepGrid"></div>
+<!-- Grid of 3 B.Tech CSE track cards created by JavaScript -->
+</div>
+<!-- Close prep section -->
+</section>
+<!-- Close landing page screen -->
+
+<section id="subjectPage" class="page-section hidden">
+<!-- Subject selection screen (hidden until a track is clicked) -->
+<div class="inner-header">
+<!-- Header with back button and selected track title -->
+<button class="back-btn" onclick="goHome()">← Back to preparation</button>
+<!-- Returns to the landing page -->
+<h1 id="subjectTitle">Select Subjects</h1>
+<!-- Displays the chosen track name -->
+<p id="subjectSubtitle">Select one or multiple subjects.</p>
+<!-- Helper instruction -->
+</div>
+<!-- Close inner header -->
+<div class="subject-toolbar">
+<!-- Bar with selection counter, category filter, and search box -->
+<div class="selection-count" id="selectionCount">0 subjects selected</div>
+<!-- Live count of selected subjects -->
+<div class="filter-row">
+<!-- Container holding the dropdown filter and search input -->
+<select id="branchFilter" class="subject-search" onchange="renderSubjects()"></select>
+<!-- Dropdown to filter subjects by CSE specialization or topic -->
+<input class="subject-search" id="subjectSearch" type="search" placeholder="Search subjects..." oninput="renderSubjects()">
+<!-- Text box to search subjects by name -->
+</div>
+<!-- Close filter row -->
+</div>
+<!-- Close subject toolbar -->
+<div id="subjectGrid" class="subject-grid"></div>
+<!-- Grid of clickable subject cards rendered by JavaScript -->
+<div class="proceed-wrap">
+<!-- Bottom bar with clear and continue buttons -->
+<span class="helper-text" id="selectionHelper">Select at least one subject to continue.</span>
+<!-- Status message -->
+<div>
+<!-- Action buttons wrapper -->
+<button class="secondary-btn" onclick="clearSubjects()">Clear Selection</button>
+<!-- Unselects all chosen subjects -->
+<button class="primary-btn" onclick="openWorkspace()">Open Preparation →</button>
+<!-- Opens the study workspace for selected subjects -->
+</div>
+<!-- Close action buttons wrapper -->
+</div>
+<!-- Close proceed bar -->
+</section>
+<!-- Close subject selection screen -->
+
+<section id="workspacePage" class="page-section hidden">
+<!-- Study workspace screen (hidden until subjects are chosen) -->
+<div class="workspace">
+<!-- Centered workspace container -->
+<div class="workspace-head">
+<!-- Workspace header with back button and subject pills -->
+<button class="back-btn" onclick="openSubjects()">← Change Subjects</button>
+<!-- Returns to the subject selection screen -->
+<h1 id="workspaceTitle">Your Preparation Workspace</h1>
+<!-- Displays current track workspace title -->
+<p>Study concepts, practice questions with answers, revise quickly, and test yourself.</p>
+<!-- Workspace subtitle -->
+<div id="subjectPills" class="subject-pills"></div>
+<!-- Row of pill tags showing all chosen subjects -->
+</div>
+<!-- Close workspace header -->
+<div class="workspace-layout">
+<!-- Two-column layout: left sidebar tabs + right main content -->
+<aside id="workspaceTabs" class="workspace-sidebar"></aside>
+<!-- Sidebar tabs created by JavaScript -->
+<main id="workspaceContent" class="workspace-main"></main>
+<!-- Main panel where the active tab's content is rendered -->
+</div>
+<!-- Close workspace layout -->
+</div>
+<!-- Close workspace container -->
+</section>
+<!-- Close workspace screen -->
+
+<section id="authPage" class="page-section">
+<!-- Mandatory Login and Sign Up screen (visible by default until logged in) -->
+<div class="auth-page">
+<!-- Split two-column authentication card -->
+<div class="auth-visual">
+<!-- Left decorative photo panel -->
+<div class="auth-visual-content">
+<!-- Text overlay at the bottom of the photo -->
+<h2>Study with purpose.</h2>
+<!-- Motivational heading -->
+<p>Login or create an account to unlock your B.Tech CSE preparation workspace.</p>
+<!-- Short tagline -->
+</div>
+<!-- Close visual overlay -->
+</div>
+<!-- Close left visual panel -->
+<div class="auth-form">
+<!-- Right side form panel (no back button so guests cannot bypass login) -->
+<h1 id="authTitle">Welcome back</h1>
+<!-- Heading that switches between Login and Sign Up -->
+<p id="authSubtitle">Login to access VIVA Prep.</p>
+<!-- Subtitle that switches with mode -->
+<div class="auth-switch">
+<!-- Toggle buttons for Login vs Sign Up -->
+<button id="loginTab" onclick="renderAuth('login')">Login</button>
+<!-- Switches form to Login mode -->
+<button id="signupTab" onclick="renderAuth('signup')">Sign Up</button>
+<!-- Switches form to Sign Up mode -->
+</div>
+<!-- Close mode switch -->
+<form id="authForm" onsubmit="submitAuth(event)"></form>
+<!-- Form fields rendered dynamically by JavaScript -->
+<p class="auth-note">Secured with Firebase Authentication & Cloud Firestore.</p>
+<!-- Security note below the form -->
+</div>
+<!-- Close form panel -->
+</div>
+<!-- Close auth split card -->
+</section>
+<!-- Close auth screen -->
+
+</main>
+<!-- Close main content container -->
+
+<div id="aiFloating" class="ai-floating hidden">
+<!-- Floating Prep AI button and chat popup (hidden until the student logs in) -->
+<button id="aiLaunch" class="ai-launch" onclick="openChat()" title="Open Prep AI">✦</button>
+<!-- Floating button that opens the Prep AI chat window -->
+<div id="chatbot" class="chatbot hidden">
+<!-- Prep AI chat window (hidden until clicked) -->
+<div class="chat-header">
+<!-- Top bar of the chat window -->
+<div class="chat-brand">
+<!-- Left side AI avatar and mode status -->
+<div class="ai-avatar">✦</div>
+<!-- Styled AI icon -->
+<div>
+<!-- AI title wrapper -->
+<strong>Prep AI</strong>
+<!-- Chatbot name -->
+<span id="aiStatus">Super Mode</span>
+<!-- Current AI mode indicator -->
+</div>
+<!-- Close title wrapper -->
+</div>
+<!-- Close brand area -->
+<div class="chat-controls">
+<!-- Right side chat control buttons -->
+<button class="icon-btn" onclick="clearChat()" title="Clear Chat">🗑️</button>
+<!-- Clears all chat messages -->
+<button class="icon-btn" onclick="closeChat()" title="Minimize">−</button>
+<!-- Minimizes the chat back to the floating button -->
+</div>
+<!-- Close chat controls -->
+</div>
+<!-- Close chat header -->
+
+<div class="model-wrap">
+<!-- Wrapper for the AI mode dropdown selector -->
+<div class="model-selector" onclick="toggleModelMenu()">
+<!-- Clickable bar showing the active AI mode -->
+<strong id="modelName">🚀 Super Mode</strong><span>▾</span>
+<!-- Displays current mode and dropdown arrow -->
+</div>
+<!-- Close model selector bar -->
+<div id="modelMenu" class="model-menu hidden">
+<!-- Dropdown menu to pick Super Mode or God Mode -->
+<div id="superOption" class="model-option active" onclick="setAIMode('super')">
+<!-- Super Mode option -->
+<strong>🚀 Super Mode</strong>
+<!-- Option title -->
+<span>Fast replies powered by the 20B model</span>
+<!-- Option description -->
+</div>
+<!-- Close Super Mode option -->
+<div id="godOption" class="model-option" onclick="setAIMode('god')">
+<!-- God Mode option -->
+<strong>👑 God Mode</strong>
+<!-- Option title -->
+<span>Deep reasoning powered by the 120B model</span>
+<!-- Option description -->
+</div>
+<!-- Close God Mode option -->
+</div>
+<!-- Close model dropdown menu -->
+</div>
+<!-- Close model wrapper -->
+
+<div class="chat-chips">
+<!-- Row of quick-prompt suggestion buttons -->
+<button class="chip" onclick="quickPrompt('Grill me with 3 tough viva questions on this topic')">🎯 Viva Grill</button>
+<!-- Sends a quick viva grilling prompt -->
+<button class="chip" onclick="quickPrompt('Give me a 30-second rapid revision summary')">⚡ 30s Summary</button>
+<!-- Sends a quick revision summary prompt -->
+<button class="chip" onclick="quickPrompt('What are the most common exam mistakes here?')">⚠️ Common Traps</button>
+<!-- Sends a quick exam mistakes prompt -->
+</div>
+<!-- Close quick-prompt chips -->
+
+<div id="chatMessages" class="chat-messages"></div>
+<!-- Scrollable area where user and AI chat bubbles appear -->
+
+<div class="chat-input-area">
+<!-- Bottom input bar for typing messages -->
+<input id="chatInput" class="chat-input" placeholder="Ask Prep AI anything..." autocomplete="off" onkeydown="handleChatKey(event)">
+<!-- Text input box that submits when Enter is pressed -->
+<button class="send-btn" onclick="sendQuestion()">➤</button>
+<!-- Button that sends the typed question to the backend -->
+</div>
+<!-- Close chat input area -->
+</div>
+<!-- Close chatbot window -->
+</div>
+<!-- Close floating AI container -->
+
+<div id="toast" class="toast"></div>
+<!-- Small popup bar at the bottom for status notifications -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<!-- Load Firebase core library from Google CDN -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<!-- Load Firebase Authentication library for Login and Sign Up -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- Load Firebase Cloud Firestore library for saving XP, streak, tokens, and avatar -->
+<script src="/script.js"></script>
+<!-- Load our main frontend JavaScript file -->
+</body>
+<!-- Close the body of the page -->
+</html>
+<!-- Close the HTML document -->

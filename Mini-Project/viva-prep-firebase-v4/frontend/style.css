@@ -1,0 +1,540 @@
+*{margin:0;padding:0;box-sizing:border-box;}
+/* Remove default browser spacing and make sizing predictable */
+:root{--bg:#060812;--text:#f8fafc;--muted:#aab3c5;--card:rgba(12,17,29,.78);--card2:rgba(17,24,39,.9);--border:rgba(255,255,255,.12);--accent:#7c5cff;--accent2:#00d4ff;--shadow:0 25px 80px rgba(0,0,0,.35);}
+/* Define dark theme CSS color variables */
+html{scroll-behavior:smooth;}
+/* Enable smooth scrolling when jumping to sections */
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:.35s ease;}
+/* Set base font, dark background, text color, and smooth theme transitions */
+body.light{--bg:#eef2f8;--text:#111827;--muted:#4b5563;--card:rgba(255,255,255,.95);--card2:rgba(255,255,255,.98);--border:rgba(15,23,42,.14);--shadow:0 20px 55px rgba(15,23,42,.14);}
+/* Override color variables when Light Mode is active */
+.hidden{display:none!important;}
+/* Utility class to completely hide elements */
+.background{position:fixed;inset:0;z-index:-10;overflow:hidden;background:var(--bg);}
+/* Fixed full-screen animated background layer behind the page */
+.background-image{position:absolute;inset:-5%;background:linear-gradient(rgba(3,6,15,.78),rgba(3,6,15,.9)),url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2200&q=90");background-size:cover;background-position:center;animation:backgroundPan 20s ease-in-out infinite alternate;}
+/* Darkened workspace photo that slowly pans in the background */
+body.light .background-image{background:linear-gradient(rgba(238,242,248,.9),rgba(238,242,248,.97)),url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2200&q=90");}
+/* Lighter overlay for the background photo in Light Mode */
+.orb{position:absolute;border-radius:50%;filter:blur(3px);opacity:.45;animation:orbFloat 9s ease-in-out infinite;}
+/* Base style for the floating decorative glow orbs */
+.orb.one{width:400px;height:400px;background:rgba(124,92,255,.22);top:8%;left:-100px;}
+/* First purple glow orb positioned on the top-left */
+.orb.two{width:350px;height:350px;background:rgba(0,212,255,.16);right:-80px;top:40%;animation-delay:2s;}
+/* Second cyan glow orb positioned on the right */
+.orb.three{width:280px;height:280px;background:rgba(255,80,180,.13);left:40%;bottom:-100px;animation-delay:4s;}
+/* Third pink glow orb positioned at the bottom */
+body.light .orb{opacity:.2;}
+/* Make background orbs softer in Light Mode */
+.grid-floor{position:absolute;width:160%;height:60%;left:-30%;bottom:-25%;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:55px 55px;transform:perspective(500px) rotateX(60deg);animation:gridMove 12s linear infinite;}
+/* Moving 3D perspective grid floor effect */
+body.light .grid-floor{background-image:linear-gradient(rgba(15,23,42,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(15,23,42,.045) 1px,transparent 1px);}
+/* Subtle dark grid lines for Light Mode */
+.particles{position:absolute;inset:0;pointer-events:none;}
+/* Container for floating background dots */
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.55);animation:particleFloat 8s linear infinite;}
+/* Each small floating dot particle */
+body.light .particle{background:rgba(30,41,59,.2);}
+/* Darker particles so they remain visible in Light Mode */
+.navbar{position:fixed;top:0;left:0;right:0;height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 38px;z-index:100;background:rgba(5,7,13,.6);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);}
+/* Fixed glass-effect navigation bar at the top */
+body.light .navbar{background:rgba(255,255,255,.9);border-bottom:1px solid rgba(15,23,42,.1);box-shadow:0 5px 25px rgba(15,23,42,.06);}
+/* White frosted navbar in Light Mode */
+.logo{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:900;letter-spacing:-.5px;}
+/* Align logo icon and brand text horizontally */
+.logo-mark{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#7c5cff,#00d4ff);color:#fff;box-shadow:0 0 28px rgba(124,92,255,.35);animation:logoPulse 3s ease-in-out infinite;}
+/* Glowing gradient V icon box */
+.logo span{background:linear-gradient(90deg,#fff,#9eeaff);-webkit-background-clip:text;color:transparent;}
+/* Gradient color text for the VIVA Prep title */
+body.light .logo span{background:linear-gradient(90deg,#111827,#4f46e5);-webkit-background-clip:text;color:transparent;}
+/* Darker gradient brand text for Light Mode */
+.nav-actions{display:flex;align-items:center;gap:10px;}
+/* Horizontal spacing for navbar buttons */
+.nav-btn{border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:750;transition:.25s;}
+/* Standard navbar button styling */
+body.light .nav-btn{background:#fff;color:#111827;border-color:rgba(15,23,42,.13);}
+/* Light Mode navbar button colors */
+.nav-btn:hover{transform:translateY(-2px);border-color:rgba(124,92,255,.55);box-shadow:0 10px 30px rgba(124,92,255,.15);}
+/* Lift navbar button slightly when hovered */
+.signup-btn{background:linear-gradient(135deg,#7c5cff,#5b8cff);border:none;color:#fff;}
+/* Highlighted purple-blue Sign Up button */
+.theme-orb{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:radial-gradient(circle at 50% 50%,#392b85,#10142a 70%);color:#fff;cursor:pointer;box-shadow:0 0 22px rgba(124,92,255,.3);transition:.35s;}
+/* Round theme toggle button */
+.theme-orb:hover{transform:rotate(12deg) scale(1.08);}
+/* Rotate and enlarge theme toggle on hover */
+.theme-symbol{font-size:19px;}
+/* Moon or sun icon size inside theme button */
+.user-stats-pill{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:12px;background:rgba(124,92,255,.14);border:1px solid rgba(124,92,255,.3);font-size:12px;font-weight:750;color:var(--text);}
+/* Badge in navbar displaying user name, streak, XP, and tokens */
+.page{min-height:100vh;padding:110px 6vw 70px;}
+/* Main page wrapper with space below the fixed navbar */
+.page-section{animation:pageEnter .55s ease both;}
+/* Smooth fade-up animation when switching screens */
+.hero{min-height:calc(100vh - 120px);display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center;}
+/* Two-column hero section layout */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:13px;font-weight:800;margin-bottom:22px;}
+/* Small rounded pill badge above hero headline */
+.online-dot{width:8px;height:8px;border-radius:50%;background:#39e58c;box-shadow:0 0 14px #39e58c;animation:onlinePulse 1.5s infinite;}
+/* Pulsing green status dot */
+.hero h1{font-size:clamp(46px,6vw,84px);line-height:.98;letter-spacing:-3px;margin-bottom:25px;}
+/* Large responsive hero headline */
+.gradient-text{background:linear-gradient(100deg,#fff,#8cecff,#a78bfa);-webkit-background-clip:text;color:transparent;background-size:200%;animation:gradientText 5s ease infinite;}
+/* Animated gradient highlight for hero text */
+body.light .gradient-text{background:linear-gradient(100deg,#111827,#4f46e5,#0284c7);-webkit-background-clip:text;color:transparent;}
+/* Darker gradient headline for Light Mode */
+.hero p{max-width:680px;color:var(--muted);font-size:18px;line-height:1.75;margin-bottom:32px;}
+/* Hero description paragraph */
+.hero-buttons{display:flex;gap:12px;flex-wrap:wrap;}
+/* Row of hero action buttons */
+.primary-btn,.secondary-btn{border:none;border-radius:14px;padding:14px 21px;cursor:pointer;font-weight:850;font-size:15px;transition:.3s;}
+/* Shared shape and font style for primary and secondary buttons */
+.primary-btn{background:linear-gradient(135deg,#7c5cff,#5c8cff);color:#fff;box-shadow:0 15px 40px rgba(92,92,255,.25);}
+/* Gradient main action button */
+.secondary-btn{background:var(--card);color:var(--text);border:1px solid var(--border);}
+/* Glass-style secondary action button */
+.primary-btn:hover,.secondary-btn:hover{transform:translateY(-3px);box-shadow:0 20px 45px rgba(0,0,0,.18);}
+/* Hover lift animation for buttons */
+.hero-note{margin-top:14px!important;margin-bottom:0!important;font-size:12px!important;}
+/* Small tech stack note under hero buttons */
+.hero-image-wrap{position:relative;}
+/* Wrapper for the hero photo and background glow */
+.hero-image{width:100%;border-radius:30px;display:block;border:1px solid var(--border);box-shadow:var(--shadow);animation:imageFloat 7s ease-in-out infinite;}
+/* Floating rounded hero illustration */
+.image-glow{position:absolute;inset:-20px;border-radius:40px;background:linear-gradient(135deg,rgba(124,92,255,.25),rgba(0,212,255,.12));filter:blur(30px);z-index:-1;}
+/* Soft blurred glow behind the hero image */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;}
+/* Three-column highlight stats row */
+.stat{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:17px;}
+/* Individual highlight stat card */
+.stat strong{display:block;font-size:24px;margin-bottom:4px;}
+/* Big number inside stat card */
+.stat span{color:var(--muted);font-size:11px;}
+/* Small label inside stat card */
+.section-title{text-align:center;margin:25px auto 38px;max-width:720px;}
+/* Centered heading block for sections */
+.section-title h2{font-size:42px;margin-bottom:10px;letter-spacing:-1.5px;}
+/* Large section heading */
+.section-title p{color:var(--muted);line-height:1.6;}
+/* Section subtitle text */
+.prep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;}
+/* Three-column grid for B.Tech CSE and preparation tracks */
+.prep-card{min-height:330px;overflow:hidden;border-radius:24px;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:.35s;}
+/* Clickable preparation path card */
+.prep-card:hover{transform:translateY(-8px) scale(1.01);border-color:rgba(124,92,255,.5);box-shadow:var(--shadow);}
+/* Lift and highlight path card on hover */
+.prep-card img{width:100%;height:165px;object-fit:cover;display:block;opacity:.85;transition:.5s;}
+/* Top cover photo on each path card */
+.prep-card:hover img{transform:scale(1.07);opacity:1;}
+/* Zoom cover photo slightly on hover */
+.prep-card-content{padding:19px;}
+/* Inner text padding for path card */
+.prep-icon{font-size:29px;margin-bottom:9px;}
+/* Emoji icon inside path card */
+.prep-card h3{font-size:19px;margin-bottom:7px;}
+/* Path card title */
+.prep-card p{color:var(--muted);font-size:13px;line-height:1.55;}
+/* Path card short description */
+.inner-header,.subject-toolbar,.subject-grid,.proceed-wrap{max-width:1050px;margin-left:auto;margin-right:auto;}
+/* Center subject selection containers */
+.inner-header{margin-top:15px;margin-bottom:25px;}
+/* Spacing around inner page headers */
+.back-btn{border:none;background:transparent;color:var(--muted);cursor:pointer;font-weight:750;margin-bottom:15px;transition:.2s;}
+/* Minimal back navigation button */
+.back-btn:hover{color:var(--text);transform:translateX(-4px);}
+/* Slide back button left on hover */
+.inner-header h1{font-size:45px;letter-spacing:-2px;margin-bottom:8px;}
+/* Inner page main heading */
+.inner-header p{color:var(--muted);}
+/* Inner page subtitle */
+.subject-toolbar{margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+/* Toolbar above subject cards */
+.filter-row{display:flex;gap:10px;width:100%;max-width:500px;}
+/* Row holding the branch filter dropdown and search input */
+.selection-count{color:var(--muted);font-weight:750;}
+/* Selected subjects count label */
+.subject-search{min-width:160px;flex:1;padding:12px 14px;border-radius:12px;border:1px solid var(--border);outline:none;background:var(--card);color:var(--text);}
+/* Styled dropdown and search input */
+.subject-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;}
+/* Three-column grid for subject cards */
+.subject-card{position:relative;padding:20px;border-radius:19px;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:.28s;min-height:104px;}
+/* Clickable subject card */
+.subject-card:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.45);}
+/* Lift subject card on hover */
+.subject-card.selected{border-color:#7c5cff;background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(0,212,255,.07)),var(--card);}
+/* Highlight style for selected subject cards */
+.subject-check{position:absolute;right:14px;top:14px;width:25px;height:25px;border-radius:8px;border:1px solid var(--border);display:grid;place-items:center;font-weight:900;}
+/* Top-right checkbox indicator on subject cards */
+.subject-card.selected .subject-check{background:#7c5cff;color:#fff;border-color:#7c5cff;}
+/* Filled purple checkmark when subject is selected */
+.subject-icon{font-size:28px;margin-bottom:9px;}
+/* Emoji icon inside subject card */
+.subject-name{font-weight:800;font-size:15px;padding-right:25px;}
+/* Subject title text */
+.subject-tag{font-size:10px;color:var(--muted);margin-top:5px;}
+/* Small category tag under subject name */
+.proceed-wrap{margin-top:22px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+/* Bottom bar with Clear and Open Preparation buttons */
+.helper-text{color:var(--muted);font-size:12px;align-self:center;}
+/* Helper message in bottom bar */
+.workspace{max-width:1200px;margin:auto;}
+/* Centered workspace wrapper */
+.workspace-head{margin-bottom:22px;}
+/* Spacing below workspace header */
+.workspace-head h1{font-size:42px;letter-spacing:-1.5px;}
+/* Workspace page title */
+.workspace-head p{color:var(--muted);margin-top:7px;}
+/* Workspace subtitle */
+.subject-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+/* Row of selected subject pills */
+.subject-pill{padding:7px 11px;border-radius:999px;background:rgba(124,92,255,.12);color:var(--text);border:1px solid rgba(124,92,255,.25);font-size:12px;font-weight:750;}
+/* Individual subject pill tag */
+.workspace-layout{display:grid;grid-template-columns:220px 1fr;gap:17px;}
+/* Sidebar plus main content two-column workspace layout */
+.workspace-sidebar{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:12px;height:max-content;position:sticky;top:94px;}
+/* Sticky left sidebar containing workspace tabs */
+.tab-btn{width:100%;border:none;background:transparent;color:var(--muted);padding:12px;border-radius:12px;text-align:left;cursor:pointer;font-weight:750;margin-bottom:4px;transition:.25s;}
+/* Sidebar navigation tab button */
+.tab-btn:hover{color:var(--text);background:rgba(124,92,255,.08);}
+/* Hover background for sidebar tabs */
+.tab-btn.active{color:#fff;background:linear-gradient(135deg,#7c5cff,#5c8cff);}
+/* Active highlighted sidebar tab */
+.workspace-main{min-width:0;}
+/* Prevent right-side workspace panel from overflowing */
+.content-card{background:var(--card2);border:1px solid var(--border);border-radius:24px;padding:27px;box-shadow:var(--shadow);animation:contentFade .35s ease both;}
+/* Main glass card inside workspace */
+.content-card h2{font-size:27px;margin-bottom:8px;}
+/* Workspace card heading */
+.content-card h3{margin-top:23px;margin-bottom:10px;}
+/* Sub-heading inside workspace card */
+.content-card p,.content-card li{color:var(--muted);line-height:1.7;}
+/* Readable body text inside workspace card */
+.content-card ul{padding-left:20px;}
+/* Indented bullet list inside workspace card */
+.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:18px;}
+/* Two-column grid for concept boxes */
+.topic-box{padding:16px;border-radius:15px;background:rgba(127,127,127,.07);border:1px solid var(--border);}
+/* Individual concept or question box */
+.topic-box strong{display:block;margin-bottom:4px;}
+/* Concept title */
+.topic-box span{color:var(--muted);font-size:13px;line-height:1.55;}
+/* Concept explanation */
+.progress-wrap{margin-top:18px;padding:15px;border:1px solid var(--border);border-radius:15px;background:rgba(127,127,127,.06);}
+/* Subject progress container in Overview tab */
+.progress-bar{height:8px;border-radius:999px;background:rgba(127,127,127,.15);overflow:hidden;margin-top:9px;}
+/* Progress bar track */
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#7c5cff,#00d4ff);border-radius:999px;transition:.5s;}
+/* Gradient progress bar fill */
+.quiz-option{width:100%;text-align:left;border:1px solid var(--border);background:rgba(127,127,127,.06);color:var(--text);padding:13px;border-radius:12px;margin-top:8px;cursor:pointer;transition:.2s;}
+/* Clickable multiple-choice quiz answer button */
+.quiz-option:hover{border-color:rgba(124,92,255,.5);transform:translateX(2px);}
+/* Hover highlight for quiz options */
+.quiz-option.correct{border-color:#34d399;background:rgba(52,211,153,.1);}
+/* Green highlight for correct quiz answer */
+.quiz-option.wrong{border-color:#fb7185;background:rgba(251,113,133,.1);}
+/* Red highlight for wrong quiz answer */
+.quiz-next{margin-top:15px;}
+/* Spacing above Next Question button */
+.ai-output-box{margin-top:16px;padding:18px;border-radius:16px;background:rgba(127,127,127,.08);border:1px solid var(--border);white-space:pre-wrap;line-height:1.65;font-size:14px;color:var(--text);}
+/* Box displaying AI output for PDF Viva and Mock Interview */
+.workspace-input,.workspace-textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--border);outline:none;background:rgba(127,127,127,.07);color:var(--text);font-family:inherit;font-size:14px;margin-top:10px;margin-bottom:14px;}
+/* Styled inputs inside workspace tabs */
+.auth-page{max-width:1050px;min-height:calc(100vh - 150px);margin:auto;display:grid;grid-template-columns:1fr 1fr;background:var(--card2);border:1px solid var(--border);border-radius:30px;overflow:hidden;box-shadow:var(--shadow);}
+/* Split two-column Login and Sign Up card */
+.auth-visual{min-height:600px;background:linear-gradient(rgba(5,7,13,.35),rgba(5,7,13,.78)),url("https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=1200&q=90");background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:40px;}
+/* Left side motivational image panel on auth page */
+.auth-visual-content h2{font-size:42px;margin-bottom:12px;color:#fff;}
+/* Heading on auth image panel */
+.auth-visual-content p{color:#dbeafe;line-height:1.65;}
+/* Subtitle on auth image panel */
+.auth-form{padding:50px;display:flex;flex-direction:column;justify-content:center;}
+/* Right side login/signup form column */
+.auth-form h1{font-size:36px;margin-bottom:8px;}
+/* Auth form title */
+.auth-form>p{color:var(--muted);margin-bottom:26px;}
+/* Auth form subtitle */
+.auth-switch{display:flex;gap:8px;margin-bottom:22px;}
+/* Row of Login / Sign Up toggle buttons */
+.auth-switch button{flex:1;padding:12px;border-radius:11px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:750;}
+/* Inactive auth mode button */
+.auth-switch button.active{background:#7c5cff;color:#fff;border-color:#7c5cff;}
+/* Active auth mode button */
+.input-group{margin-bottom:14px;}
+/* Wrapper for each form label and input */
+.input-group label{display:block;font-size:13px;font-weight:750;margin-bottom:7px;}
+/* Form field label */
+.input-group input{width:100%;padding:13px;border-radius:12px;border:1px solid var(--border);outline:none;background:rgba(127,127,127,.07);color:var(--text);}
+/* Form text input field */
+.auth-submit{width:100%;margin-top:5px;}
+/* Full-width submit button for auth form */
+.auth-note{font-size:11px;color:var(--muted);margin-top:12px;}
+/* Small Firebase security note under form */
+.ai-floating{position:fixed;right:24px;bottom:24px;z-index:150;}
+/* Pin Prep AI button and chat popup to the bottom-right corner */
+.ai-launch{width:62px;height:62px;border-radius:20px;border:none;cursor:pointer;background:linear-gradient(135deg,#7c5cff,#00bfff);color:#fff;font-size:26px;box-shadow:0 15px 45px rgba(80,80,255,.35);animation:aiFloat 3s ease-in-out infinite;}
+/* Floating Prep AI launch button */
+.chatbot{width:390px;max-width:calc(100vw - 30px);height:560px;border-radius:25px;background:var(--card2);border:1px solid var(--border);box-shadow:0 30px 100px rgba(0,0,0,.4);overflow:hidden;display:flex;flex-direction:column;animation:chatbotOpen .35s ease both;}
+/* Popup Prep AI chat window */
+.chat-header{padding:17px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+/* Top bar of the chat window */
+.chat-brand{display:flex;align-items:center;gap:10px;}
+/* AI avatar and name alignment */
+.ai-avatar{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#7c5cff,#00d4ff);color:#fff;}
+/* Square gradient AI avatar */
+.chat-brand span{font-size:11px;color:var(--muted);display:block;}
+/* Small mode text under Prep AI name */
+.chat-controls{display:flex;gap:6px;}
+/* Row for Clear and Minimize buttons */
+.icon-btn{width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;}
+/* Small square icon buttons in chat header */
+.model-wrap{position:relative;}
+/* Anchor container for the AI mode dropdown */
+.model-selector{margin:10px 13px;padding:10px 12px;border-radius:12px;background:rgba(124,92,255,.09);border:1px solid rgba(124,92,255,.18);cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+/* Clickable AI mode bar */
+.model-menu{position:absolute;left:13px;right:13px;top:55px;z-index:10;background:var(--card2);border:1px solid var(--border);border-radius:15px;padding:7px;box-shadow:var(--shadow);}
+/* Dropdown list of AI modes */
+.model-option{padding:12px;border-radius:10px;cursor:pointer;}
+/* Each mode option inside dropdown */
+.model-option:hover,.model-option.active{background:rgba(124,92,255,.14);}
+/* Highlight hovered or active AI mode */
+.model-option strong{display:block;}
+/* Mode title */
+.model-option span{color:var(--muted);font-size:11px;}
+/* Mode description */
+.chat-chips{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;border-bottom:1px solid var(--border);background:rgba(0,0,0,.1);}
+/* Horizontal bar of quick-prompt chips */
+.chip{white-space:nowrap;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;background:rgba(124,92,255,.15);border:1px solid rgba(124,92,255,.3);color:var(--text);cursor:pointer;}
+/* Individual quick-prompt button */
+.chip:hover{background:var(--accent);color:#fff;}
+/* Highlight quick-prompt chip on hover */
+.chat-messages{flex:1;overflow-y:auto;padding:15px;}
+/* Scrollable message history area */
+.message{max-width:88%;margin-bottom:12px;padding:12px 14px;border-radius:15px;line-height:1.55;font-size:13px;white-space:pre-wrap;}
+/* Base chat bubble style */
+.message.ai{background:rgba(127,127,127,.08);border:1px solid var(--border);color:var(--text);}
+/* Left-aligned AI reply bubble */
+.message.user{margin-left:auto;background:linear-gradient(135deg,#7c5cff,#5c8cff);color:#fff;}
+/* Right-aligned user message bubble */
+.message code{background:rgba(0,0,0,.35);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;}
+/* Inline code styling inside AI replies */
+.message pre{background:rgba(0,0,0,.45);padding:10px;border-radius:8px;overflow-x:auto;margin:6px 0;}
+/* Code block styling inside AI replies */
+.chat-input-area{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;}
+/* Bottom bar with chat input and send button */
+.chat-input{flex:1;min-width:0;padding:12px;border-radius:12px;border:1px solid var(--border);outline:none;background:rgba(127,127,127,.07);color:var(--text);}
+/* Chat text input field */
+.send-btn{width:45px;border:none;border-radius:12px;background:#7c5cff;color:#fff;cursor:pointer;}
+/* Purple send arrow button */
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,30px);background:#111827;color:#fff;padding:12px 18px;border-radius:12px;z-index:300;opacity:0;pointer-events:none;transition:.3s;}
+/* Hidden bottom toast notification bar */
+.toast.show{opacity:1;transform:translate(-50%,0);}
+/* Visible state for toast notification */
+.dashboard-section{max-width:1200px;margin:35px auto 80px;}
+/* Centered Student Command Center dashboard */
+.dashboard-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:22px;}
+/* Dashboard title and refresh button row */
+.dashboard-kicker{display:inline-flex;padding:7px 11px;border:1px solid rgba(124,92,255,.25);background:rgba(124,92,255,.1);border-radius:999px;color:#a9a0ff;font-size:11px;font-weight:900;letter-spacing:1.2px;margin-bottom:10px;}
+/* Small badge above dashboard heading */
+.dashboard-head h2{font-size:38px;letter-spacing:-1.5px;margin-bottom:5px;}
+/* Dashboard main heading */
+.dashboard-head p{color:var(--muted);font-size:13px;}
+/* Dashboard subtitle */
+.dashboard-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px;}
+/* Five-column grid for XP, Streak, Tokens Used, Progress, and Achievements */
+.dash-stat{display:flex;align-items:center;gap:13px;padding:17px;border-radius:20px;background:var(--card);border:1px solid var(--border);min-height:105px;transition:.3s;}
+/* Individual dashboard metric card */
+.dash-stat:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.35);}
+/* Lift dashboard metric card on hover */
+.dash-stat-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;background:rgba(124,92,255,.12);font-size:21px;flex:none;}
+/* Icon square inside dashboard stat card */
+.dash-stat span{display:block;color:var(--muted);font-size:9px;font-weight:900;letter-spacing:1px;margin-bottom:4px;}
+/* Uppercase label inside dashboard stat card */
+.dash-stat strong{display:block;font-size:25px;}
+/* Main metric number */
+.dash-stat small{display:block;color:var(--muted);font-size:10px;margin-top:3px;}
+/* Helper caption under metric number */
+.dashboard-main-grid,.dashboard-bottom-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:14px;}
+/* Two-column dashboard rows */
+.dashboard-card{background:var(--card);border:1px solid var(--border);border-radius:23px;padding:23px;}
+/* Base dashboard card surface */
+.card-label{font-size:10px;font-weight:900;letter-spacing:1.2px;color:var(--muted);margin-bottom:18px;}
+/* Small uppercase header on each dashboard card */
+.continue-empty,.continue-active{display:flex;align-items:center;gap:18px;min-height:125px;}
+/* Horizontal layout inside Continue Preparing card */
+.continue-orb{width:76px;height:76px;border-radius:23px;display:grid;place-items:center;font-size:30px;background:radial-gradient(circle at 30% 30%,#9eeaff,#6f55ff 45%,#171b38 75%);flex:none;}
+/* Glowing orb icon when no session is saved yet */
+.continue-copy{flex:1;min-width:0;}
+/* Flexible text wrapper in Continue Preparing card */
+.continue-copy>span{font-size:10px;color:#9b8cff;font-weight:900;text-transform:uppercase;}
+/* Saved path label */
+.continue-copy h3,.continue-empty h3{font-size:22px;margin:5px 0 7px;}
+/* Continue card title */
+.continue-copy p,.continue-empty p{color:var(--muted);font-size:12px;margin-bottom:12px;}
+/* Continue card description */
+.continue-icon{width:62px;height:62px;border-radius:19px;display:grid;place-items:center;background:rgba(0,212,255,.1);font-size:28px;flex:none;}
+/* Saved subject emoji icon */
+.mini-progress{height:6px;background:rgba(127,127,127,.14);border-radius:999px;overflow:hidden;max-width:440px;}
+/* Mini progress track in Continue card */
+.mini-progress div{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#7c5cff,#00d4ff);transition:.6s;}
+/* Mini progress fill bar */
+.challenge-card{background:linear-gradient(145deg,rgba(124,92,255,.13),var(--card));}
+/* Purple-tinted Today's Challenge card */
+.challenge-number{font-size:44px;font-weight:950;line-height:1;background:linear-gradient(90deg,#8b7cff,#00d4ff);-webkit-background-clip:text;color:transparent;}
+/* Large decorative challenge number */
+.challenge-card h3{font-size:18px;margin:7px 0;}
+/* Challenge title */
+.challenge-card p{color:var(--muted);font-size:12px;line-height:1.55;}
+/* Challenge description */
+.challenge-status{display:flex;align-items:center;gap:7px;margin-top:15px;font-size:11px;color:var(--muted);font-weight:800;}
+/* Challenge status indicator row */
+.challenge-status span:first-child{width:8px;height:8px;border-radius:50%;background:#64748b;}
+/* Gray dot when challenge is not started */
+.challenge-status.done span:first-child{background:#34d399;box-shadow:0 0 12px rgba(52,211,153,.7);}
+/* Green glowing dot when challenge is active */
+.achievement-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+/* Three-column grid for 6 achievement badges */
+.achievement{padding:14px;border-radius:16px;background:rgba(127,127,127,.055);border:1px solid var(--border);opacity:.5;transition:.3s;}
+/* Locked achievement card (dimmed) */
+.achievement.unlocked{opacity:1;border-color:rgba(124,92,255,.35);background:linear-gradient(145deg,rgba(124,92,255,.1),rgba(0,212,255,.04));}
+/* Unlocked achievement card (full brightness) */
+.achievement-icon{font-size:23px;margin-bottom:8px;filter:grayscale(1);}
+/* Grayscale icon for locked achievements */
+.achievement.unlocked .achievement-icon{filter:none;}
+/* Full-color icon for unlocked achievements */
+.achievement strong{display:block;font-size:12px;margin-bottom:4px;}
+/* Achievement title */
+.achievement span{display:block;color:var(--muted);font-size:10px;line-height:1.4;}
+/* Achievement description */
+.signal-wrap{display:flex;align-items:center;gap:18px;margin-bottom:20px;}
+/* Layout for circular progress ring and momentum text */
+.signal-ring{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;flex:none;background:conic-gradient(#7c5cff 0deg,rgba(127,127,127,.12) 0deg);position:relative;}
+/* Circular progress ring outer layer */
+.signal-ring::after{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--card);}
+/* Inner cutout circle to create a ring shape */
+.signal-ring span{position:relative;z-index:1;font-size:20px;font-weight:900;}
+/* Percentage text centered inside the ring */
+.signal-wrap p{font-size:11px;color:var(--muted);line-height:1.5;}
+/* Momentum description text */
+.activity-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;align-items:end;height:58px;}
+/* Seven-column bar chart for weekly activity */
+.activity-day{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;}
+/* Single day column in activity chart */
+.activity-day i{display:block;width:100%;max-width:24px;height:8px;border-radius:6px;background:rgba(124,92,255,.15);transition:.4s;}
+/* Inactive day bar */
+.activity-day.active i{background:linear-gradient(180deg,#00d4ff,#7c5cff);}
+/* Active glowing day bar */
+.activity-day span{font-size:8px;color:var(--muted);}
+/* Weekday initial label below bar */
+@keyframes backgroundPan{from{transform:scale(1.03) translate(-1%,-1%)}to{transform:scale(1.08) translate(1%,1%)}}
+/* Slowly pan the background photo */
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(25px,-25px)}}
+/* Float background glow orbs gently */
+@keyframes gridMove{from{background-position:0 0}to{background-position:0 55px}}
+/* Scroll the 3D perspective grid forward */
+@keyframes particleFloat{from{transform:translateY(100vh);opacity:0}20%{opacity:1}100%{transform:translateY(-10vh);opacity:0}}
+/* Float background dots from bottom to top */
+@keyframes gradientText{0%,100%{background-position:0%}50%{background-position:100%}}
+/* Animate hero headline gradient colors */
+@keyframes imageFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+/* Gently bob the hero image up and down */
+@keyframes pageEnter{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+/* Fade in pages smoothly */
+@keyframes contentFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* Fade in workspace cards when switching tabs */
+@keyframes aiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* Float the Prep AI launch button */
+@keyframes chatbotOpen{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
+/* Pop-in animation when opening Prep AI chat */
+@keyframes onlinePulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+/* Pulse the green status dot */
+@keyframes logoPulse{0%,100%{box-shadow:0 0 25px rgba(124,92,255,.25)}50%{box-shadow:0 0 38px rgba(0,212,255,.35)}}
+/* Pulse the glow around the logo icon */
+@media(max-width:1000px){.hero,.workspace-layout,.auth-page,.dashboard-main-grid,.dashboard-bottom-grid{grid-template-columns:1fr}.prep-grid,.subject-grid,.dashboard-grid{grid-template-columns:repeat(2,1fr)}.workspace-sidebar{display:flex;overflow-x:auto;position:static}.tab-btn{min-width:max-content;width:auto;margin-right:5px}.auth-visual{min-height:260px}}
+/* Consolidated tablet responsive layout rules */
+@media(max-width:650px){.navbar{padding:0 14px;height:68px}.nav-btn{padding:8px 9px;font-size:12px}.page{padding:95px 16px 50px}.hero h1{font-size:44px}.stats,.prep-grid,.subject-grid,.topic-grid,.dashboard-grid,.achievement-list{grid-template-columns:1fr}.dashboard-head,.continue-empty,.continue-active{flex-direction:column;align-items:flex-start}.chatbot{height:calc(100vh - 100px)}.ai-floating{right:15px;bottom:15px}}
+/* Consolidated mobile phone responsive layout rules */
+
+.profile-avatar-btn{width:46px;height:46px;border-radius:14px;border:1px solid rgba(124,92,255,.45);background:rgba(24,20,52,.92);color:#fff;cursor:pointer;display:grid;place-items:center;padding:0;overflow:hidden;transition:.25s;box-shadow:0 6px 20px rgba(124,92,255,.2);}
+/* Compact rounded profile avatar button in navbar (replaces long stats pill) */
+body.light .profile-avatar-btn{background:#f3f0ff;border-color:rgba(124,92,255,.35);color:#111827;}
+/* Light Mode styling for compact profile avatar button */
+.profile-avatar-btn:hover{transform:translateY(-2px) scale(1.04);border-color:#7c5cff;box-shadow:0 10px 26px rgba(124,92,255,.32);}
+/* Lift and glow profile button on hover */
+.nav-avatar-display{width:100%;height:100%;display:grid;place-items:center;font-size:20px;}
+/* Center avatar icon or uploaded image inside navbar button */
+.nav-avatar-display img,.drawer-avatar-preview img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;}
+/* Make uploaded profile photos fit cleanly inside circular/rounded frames */
+.drawer-backdrop{position:fixed;inset:0;background:rgba(3,6,15,.55);backdrop-filter:blur(4px);z-index:210;}
+/* Dimmed backdrop behind the slide-out profile drawer */
+.profile-drawer{position:fixed;top:0;right:0;bottom:0;width:340px;max-width:90vw;background:var(--card2);border-left:1px solid var(--border);z-index:220;padding:22px;display:flex;flex-direction:column;gap:18px;box-shadow:-20px 0 60px rgba(0,0,0,.45);transform:translateX(105%);transition:transform .3s ease;overflow-y:auto;}
+/* Slide-out right-side panel for profile picture, settings, and logout */
+.profile-drawer.open{transform:translateX(0);}
+/* Visible open state for the slide-out profile drawer */
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border);font-size:16px;}
+/* Header row inside the profile drawer */
+.drawer-profile-box{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;background:rgba(124,92,255,.1);border:1px solid rgba(124,92,255,.22);}
+/* Highlight box displaying current avatar, name, and email */
+.drawer-avatar-preview{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#7c5cff,#00d4ff);display:grid;place-items:center;font-size:28px;overflow:hidden;flex:none;border:2px solid rgba(255,255,255,.25);}
+/* Large circular avatar preview inside the drawer */
+.drawer-user-meta{min-width:0;}
+/* Prevent long emails from overflowing the drawer */
+.drawer-user-meta strong{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* Student display name inside drawer */
+.drawer-user-meta span{display:block;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+/* Student email inside drawer */
+.drawer-section{display:flex;flex-direction:column;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+/* Grouped settings block inside the drawer */
+.drawer-label{font-size:10px;font-weight:900;letter-spacing:1.1px;color:var(--muted);}
+/* Small uppercase section label inside the drawer */
+.upload-photo-btn{display:block;text-align:center;font-size:13px;padding:10px 14px;}
+/* Full-width Upload Photo button */
+.avatar-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+/* Five-column row of quick emoji avatar presets */
+.preset-btn{height:40px;border-radius:10px;border:1px solid var(--border);background:rgba(127,127,127,.08);font-size:18px;cursor:pointer;transition:.2s;}
+/* Individual preset avatar button */
+.preset-btn:hover{border-color:#7c5cff;background:rgba(124,92,255,.18);transform:translateY(-2px);}
+/* Hover state for preset avatar buttons */
+.drawer-field label{display:block;font-size:12px;font-weight:750;margin-bottom:6px;color:var(--muted);}
+/* Label above display name input */
+.drawer-inline-row{display:flex;gap:8px;align-items:center;}
+/* Inline row for name input and Save button */
+.compact-input{margin:0!important;padding:9px 11px!important;font-size:13px!important;}
+/* Compact input inside settings drawer */
+.compact-btn{padding:9px 13px!important;font-size:12px!important;border-radius:10px!important;white-space:nowrap;}
+/* Compact button inside settings drawer */
+.compact-select{min-width:130px!important;flex:0!important;padding:8px 10px!important;font-size:12px!important;}
+/* Compact select dropdown inside settings drawer */
+.drawer-setting-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;}
+/* Horizontal row for each setting toggle */
+.drawer-footer{margin-top:auto;padding-top:8px;}
+/* Push logout button to the bottom of the slider */
+.logout-drawer-btn{width:100%;padding:13px;border-radius:14px;border:1px solid rgba(251,113,133,.4);background:rgba(251,113,133,.14);color:#fb7185;font-weight:850;font-size:14px;cursor:pointer;transition:.25s;}
+/* Prominent red-tinted Logout button inside the drawer */
+.logout-drawer-btn:hover{background:#fb7185;color:#fff;transform:translateY(-2px);}
+/* Hover fill for Logout button */
+.section-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+/* Row placing section title and AI Fetch button side by side */
+.qa-card{padding:16px;border-radius:15px;background:rgba(127,127,127,.07);border:1px solid var(--border);margin-bottom:11px;}
+/* Question-wise card displaying a question and its answer together */
+.qa-q{display:block;font-size:14px;font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.5;}
+/* Bold question text inside Q&A card */
+.qa-a{font-size:13px;color:var(--muted);line-height:1.6;padding:10px 12px;border-radius:10px;background:rgba(124,92,255,.08);border-left:3px solid #7c5cff;}
+/* Highlighted answer box directly beneath each question */
+.overview-checklist{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+/* Three-column section completion checklist inside Overview tab */
+.check-pill{padding:9px 11px;border-radius:10px;border:1px solid var(--border);background:rgba(127,127,127,.06);color:var(--muted);font-size:12px;font-weight:750;cursor:pointer;text-align:left;transition:.2s;}
+/* Clickable checklist badge in Overview */
+.check-pill:hover{border-color:rgba(124,92,255,.5);color:var(--text);}
+/* Hover highlight for checklist badge */
+.check-pill.done{border-color:#34d399;background:rgba(52,211,153,.12);color:#34d399;}
+/* Green completed state for viewed sections */
+@media(max-width:650px){.overview-checklist{grid-template-columns:1fr}}
+/* Stack overview checklist vertically on small phones */
+
+.password-wrap{position:relative;display:flex;align-items:center;}
+/* Wrapper positioning the show/hide eye button inside the password input */
+.password-wrap input{padding-right:44px;}
+/* Add right padding so typed password text never overlaps the eye icon */
+.eye-btn{position:absolute;right:10px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:17px;padding:4px 6px;border-radius:8px;transition:.2s;}
+/* Eye icon button placed at the right end of the password field */
+.eye-btn:hover{color:var(--text);background:rgba(124,92,255,.15);}
+/* Highlight eye icon button on hover */
